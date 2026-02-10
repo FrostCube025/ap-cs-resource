@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Il mio Progetto Web</title> <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png"> <style>
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .btn { padding: 15px 30px; font-size: 18px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 8px; transition: 0.3s; }
+        .btn:hover { background: #0056b3; }
+        #emergency { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; padding: 50px; overflow-y: scroll; z-index: 9999; }
+    </style>
+</head>
+<body>
+
+    <div id="main-content">
+        <h1>Esercitazione Programmazione Web</h1>
+        <p>Stato del server: <span style="color: green;">Attivo</span></p>
+        <button class="btn" onclick="openGame()">Avvia Anteprima Progetto</button>
+    </div>
+
+    <div id="emergency">
+        <h1>Algoritmi di Ordinamento - Wikipedia</h1>
+        <p>In informatica, un algoritmo di ordinamento è un algoritmo che viene utilizzato per porre gli elementi di un insieme in un determinato ordine...</p>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Sorting_quicksort_anim.gif/220px-Sorting_quicksort_anim.gif" alt="sorting">
+    </div>
+
+    <script>
+        // Cambia titolo alla scheda per mimetizzarsi
+        document.title = "I miei file - Google Drive";
+
+        function openGame() {
+            let url = "https://3kh0.github.io/"; // Incolla qui il link del gioco o del proxy
+            let win = window.open();
+            win.document.body.style.margin = '0';
+            win.document.body.style.height = '100vh';
+            let iframe = win.document.createElement('iframe');
+            iframe.style.border = 'none';
+            iframe.style.width = '100%';
+            iframe.style.height = '100%';
+            iframe.src = url;
+            win.document.body.appendChild(iframe);
+        }
+
+        // PANIC KEY: Se premi ESC, nasconde tutto e mostra Wikipedia
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "Escape") {
+                document.getElementById('main-content').style.display = 'none';
+                document.getElementById('emergency').style.display = 'block';
+                document.title = "Algoritmi di Ordinamento - Wikipedia";
+            }
+        });
+    </script>
+</body>
+</html>
