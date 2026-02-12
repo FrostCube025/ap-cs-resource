@@ -81,38 +81,37 @@
         let target = url;
         if (!target.startsWith('http')) target = 'https://' + target;
 
-        // Questo è un gateway Ultraviolet esterno molto potente
-        const proxyLink = "https://r.j-v.it/main/" + target;
+        // LISTA DI GATEWAY AGGIORNATI (Se uno non va, cambialo qui)
+        // Questi sono motori Ultraviolet attivi ora
+        const gateways = [
+            "https://science.thebeastisback.org/main/",
+            "https://math.educationaccess.net/main/",
+            "https://c.p-m.fun/main/",
+            "https://uv.radon.games/main/"
+        ];
 
-        // TECNICA CLOAKING: Crea una pagina "fantasma"
+        // Usiamo il primo della lista per ora
+        const proxyLink = gateways[0] + target;
+
         const win = window.open();
+        if (!win || win.closed) {
+            alert("Per favore, consenti i pop-up per far funzionare il debugger!");
+            return;
+        }
+
         win.document.body.style.margin = '0';
         win.document.body.style.height = '100vh';
+        win.document.body.style.overflow = 'hidden';
         
-        // Crea l'iframe nella nuova pagina circa:vuota
         const iframe = win.document.createElement('iframe');
         iframe.style.border = 'none';
         iframe.style.width = '100%';
         iframe.style.height = '100%';
-        iframe.style.margin = '0';
         iframe.src = proxyLink;
         
         win.document.body.appendChild(iframe);
-        
-        // Cambia l'icona e il titolo della nuova scheda per mimetizzarla
-        const link = win.document.createElement('link');
-        link.rel = 'icon';
-        link.href = 'https://ssl.gstatic.com/images/branding/product/1x/drive_2020q4_32dp.png';
-        win.document.head.appendChild(link);
-        win.document.title = 'Google Drive - I miei file';
+        win.document.title = 'Google Drive - Documenti';
     }
-
-    // PANIC BUTTON rimane uguale sul sito principale
-    document.addEventListener('keydown', function(e) {
-        if (e.key.toLowerCase() === 'p' || e.key === 'Escape') {
-            window.location.href = "https://classroom.google.com";
-        }
-    });
 </script>
 
 </body>
