@@ -76,21 +76,21 @@
 
 <script>
     function launchProxy(url) {
-        if (!url) return;
-        
-        // Aggiunge https se manca
-        let finalTarget = url;
-        if (!finalTarget.startsWith('http')) {
-            finalTarget = 'https://' + finalTarget;
-        }
-
-        // Usiamo un gateway stabile per il proxy
-        const gateway = "https://tbg95.co/main/"; 
-        
-        document.getElementById('proxyFrame').src = gateway + finalTarget;
-        document.getElementById('proxyLayer').style.display = 'block';
-        document.title = "Google Docs - Analisi Codice";
+    if (!url) return;
+    
+    let finalTarget = url;
+    if (!finalTarget.startsWith('http')) {
+        finalTarget = 'https://' + finalTarget;
     }
+
+    // NUOVO GATEWAY PIÙ STABILE (Rammerhead o simile)
+    // Usiamo un servizio che non blocca gli iFrame di GitHub
+    const gateway = "https://r.j-v.it/main/"; 
+    
+    document.getElementById('proxyFrame').src = gateway + finalTarget;
+    document.getElementById('proxyLayer').style.display = 'block';
+    document.title = "Google Docs - Analisi Codice";
+}
 
     function closeProxy() {
         document.getElementById('proxyLayer').style.display = 'none';
