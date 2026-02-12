@@ -8,57 +8,73 @@
     <style>
         :root { --primary: #2c3e50; --secondary: #34495e; --accent: #3498db; --text: #ecf0f1; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; color: #333; }
-        header { background: var(--primary); color: white; padding: 1.5rem; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
-        .card { background: white; padding: 1.5rem; border-radius: 8px; border-left: 5px solid var(--accent); cursor: pointer; transition: transform 0.2s; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .card:hover { transform: translateY(-5px); background: #f9f9f9; }
-        .card h3 { margin-top: 0; color: var(--primary); }
-        .card p { font-size: 0.9rem; color: #666; }
+        header { background: var(--primary); color: white; padding: 1.5rem; text-align: center; }
+        
+        /* Stile Barra di Ricerca Proxy */
+        .search-container { max-width: 900px; margin: 1rem auto; padding: 1rem; text-align: center; }
+        .search-box { display: flex; gap: 5px; background: white; padding: 10px; border-radius: 50px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #ddd; }
+        .search-box input { border: none; outline: none; flex-grow: 1; padding: 10px 20px; font-size: 16px; border-radius: 50px; }
+        .search-box button { background: var(--accent); color: white; border: none; padding: 10px 25px; border-radius: 50px; cursor: pointer; font-weight: bold; }
+        
+        .container { max-width: 900px; margin: 1rem auto; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+        .card { background: white; padding: 1.5rem; border-radius: 8px; border-left: 5px solid var(--accent); cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        
+        /* Layer del Proxy */
         #proxyLayer { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 99999; }
-        .proxy-bar { background: #222; color: #00ff00; padding: 5px 15px; font-family: monospace; display: flex; justify-content: space-between; align-items: center; }
-        #proxyFrame { width: 100%; height: calc(100% - 30px); border: none; }
-        .btn-exit { background: #444; color: #ccc; border: 1px solid #666; cursor: pointer; font-size: 11px; padding: 2px 8px; }
+        .proxy-bar { background: #222; color: #00ff00; padding: 8px 15px; font-family: monospace; display: flex; justify-content: space-between; }
+        #proxyFrame { width: 100%; height: calc(100% - 40px); border: none; }
     </style>
 </head>
 <body>
 
 <header>
     <h1>AP Computer Science A</h1>
-    <p>Unit 4: Resource Distribution & Documentation</p>
+    <p>Student Documentation Portal</p>
 </header>
+
+<div class="search-container">
+    <div class="search-box">
+        <input type="text" id="urlInput" placeholder="Enter URL to debug (e.g. poki.com)..." onkeydown="if(event.key==='Enter') launchCustomProxy()">
+        <button onclick="launchCustomProxy()">DEBUG</button>
+    </div>
+    <p style="font-size: 11px; color: #888; margin-top: 8px;">Enter a URL and press Enter to launch the secure sandboxed environment.</p>
+</div>
 
 <div class="container">
     <div class="card" onclick="window.open('https://docs.oracle.com/javase/8/docs/api/', '_blank')">
         <h3>Java API Documentation</h3>
-        <p>Official Oracle reference for Java classes and methods.</p>
+        <p>Standard library reference for class structures.</p>
     </div>
-
-    <div class="card" onclick="launchProxy()">
-        <h3>Advanced Web Debugger</h3>
-        <p>Sandboxed environment for testing external web components.</p>
     </div>
-
-    <div class="card" onclick="window.location.href='https://github.com/frostcube025/ap-cs-resource'">
-        <h3>Source Code Repository</h3>
-        <p>Access the project files and build documentation.</p>
-    </div>
-</div>
 
 <div id="proxyLayer">
     <div class="proxy-bar">
-        <span>[STATUS: ENCRYPTED_TUNNEL_ACTIVE]</span>
-        <button class="btn-exit" onclick="closeProxy()">CLOSE (ESC)</button>
+        <span>[SANDBOX_MODE: ACTIVE]</span>
+        <span id="currentDisplayUrl" style="font-size: 10px; color: #666;"></span>
+        <button onclick="closeProxy()" style="background:#444; color:white; border:none; cursor:pointer; padding: 2px 10px;">ESC</button>
     </div>
     <iframe id="proxyFrame" src=""></iframe>
 </div>
 
 <script>
-    function launchProxy() {
-        // Questo è il link del proxy. Puoi cambiarlo se viene bloccato.
-        const proxyUrl = "https://tbg95.co/"; 
-        document.getElementById('proxyFrame').src = proxyUrl;
+    // Funzione per la barra di ricerca personalizzata
+    function launchCustomProxy() {
+        let targetUrl = document.getElementById('urlInput').value;
+        if (!targetUrl) return;
+
+        // Se l'utente non mette http/https, lo aggiungiamo noi
+        if (!targetUrl.startsWith('http')) {
+            targetUrl = 'https://' + targetUrl;
+        }
+
+        // Usiamo un gateway Ultraviolet pubblico per processare l'URL
+        // Questo trasforma l'indirizzo in modo che Securly non lo veda
+        const proxyGateway = "https://tbg95.co/main/"; 
+        const finalUrl = proxyGateway + targetUrl;
+
+        document.getElementById('proxyFrame').src = finalUrl;
         document.getElementById('proxyLayer').style.display = 'block';
-        document.title = "Google Docs - CS Notes";
+        document.title = "Google Docs - Working...";
     }
 
     function closeProxy() {
@@ -67,6 +83,7 @@
         document.title = "AP Computer Science - Student Resource Library";
     }
 
+    // PANIC BUTTON
     document.addEventListener('keydown', function(e) {
         if (e.key.toLowerCase() === 'p' || e.key === 'Escape') {
             closeProxy();
